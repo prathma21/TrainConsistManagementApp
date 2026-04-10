@@ -1,29 +1,47 @@
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
+/**
+ * =====================================
+ * MAIN CLASS - TrainConsistManagementApp
+ * =====================================
+ *
+ * Use Case 5: Preserve Insertion Order of Bogies
+ *
+ * Description:
+ * This class demonstrates how LinkedHashSet preserves
+ * insertion order while automatically enforcing uniqueness.
+ *
+ * At this stage, the application:
+ * - Maintains insertion sequence
+ * - Prevents duplicate bogie entries
+ * - Displays final ordered train formation
+ *
+ * @author Developer
+ * @version 5.0
+ */
 public class TrainConsistManagementApp {
+
     public static void main(String[] args) {
 
-        System.out.println("=====================================");
-        System.out.println(" UC3 - Track Unique Bogie IDs ");
+        System.out.println("====================================");
+        System.out.println(" UC5 - Preserve Insertion Order of Bogies ");
         System.out.println("=====================================\n");
 
-        // Create a Set to store unique bogie IDs
-        // HashSet stores only unique values
-        Set<String> bogies = new HashSet<>();
+        // LinkedHashSet preserves order and ensures uniqueness
+        Set<String> formation = new LinkedHashSet<>();
 
-        // ---- ADD IDs (including duplicates) ----
-        bogies.add("BG101");
-        bogies.add("BG102");
-        bogies.add("BG103");
-        bogies.add("BG104");
+        // Add bogies (duplicates will be ignored automatically)
+        formation.add("Engine");
+        formation.add("Sleeper");
+        formation.add("Cargo");
+        formation.add("Guard");
 
-        // Duplicate entries (ignored automatically)
-        bogies.add("BG101"); // Duplicate entry
-        bogies.add("BG102"); // Duplicate entry
+        // Duplicate entries (ignored)
+        formation.add("Sleeper");
+        formation.add("Cargo");
 
-        // ---- DISPLAY UNIQUE BOGIE IDs ----
-        System.out.println("Final Train Bogie IDs (Unique):");
-        System.out.println(bogies);
-
+        System.out.println("Final Train Formation:");
+        System.out.println(formation + "\n");
     }
 }
