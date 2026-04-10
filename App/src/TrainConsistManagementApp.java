@@ -1,3 +1,7 @@
+feature/UC6-MapBogietoCapacity
+import java.util.HashMap;
+import java.util.Map;
+
  feature/UC5-PreserveInsertionOrderofBogies
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -46,27 +50,37 @@ import java.util.List;
  * @version 4.0
  dev
  */
+ dev
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
+feature/UC6-MapBogietoCapacity
+        System.out.println("=====================================");
+        System.out.println(" UC6 - Map Bogie to Capacity (HashMap) ");
         System.out.println("====================================");
  feature/UC5-PreserveInsertionOrderofBogies
         System.out.println(" UC5 - Preserve Insertion Order of Bogies ");
+dev
         System.out.println("=====================================\n");
 
-        // LinkedHashSet preserves order and ensures uniqueness
-        Set<String> formation = new LinkedHashSet<>();
+        // HashMap stores data in key -> value format
+        Map<String, Integer> capacityMap = new HashMap<>();
 
-        // Add bogies (duplicates will be ignored automatically)
-        formation.add("Engine");
-        formation.add("Sleeper");
-        formation.add("Cargo");
-        formation.add("Guard");
+        // ---- Insert bogie capacities ----
+        capacityMap.put("First Class", 24);
+        capacityMap.put("Cargo", 120);
+        capacityMap.put("Sleeper", 72);
+        capacityMap.put("AC Chair", 56);
 
-        // Duplicate entries (ignored)
-        formation.add("Sleeper");
-        formation.add("Cargo");
+        System.out.println("Bogie Capacity Details:\n");
+
+        // Display bogie capacities
+        for (Map.Entry<String, Integer> entry : capacityMap.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
+feature/UC6-MapBogietoCapacity
 
         System.out.println("Final Train Formation:");
         System.out.println(formation + "\n");
@@ -115,5 +129,6 @@ public class TrainConsistManagementApp {
             list.add(index, bogie);
         }
     dev
+dev
     }
 }
