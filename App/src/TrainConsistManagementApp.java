@@ -1,3 +1,20 @@
+feature/UC13-PerformanceComparison
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class UseCase13TrainConsistMgmt {
+
+    static class Bogie {
+        String type;
+        int capacity;
+
+        Bogie(String type, int capacity) {
+            this.type = type;
+            this.capacity = capacity;
+        }
+    }
+=======
 feature/UC11-ValidateTrainIDCargoCodes
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -114,12 +131,21 @@ dev
 feature/UC9-GroupBogiesbyType
 dev
     public static void main(String[] args) {
+dev
 
-        Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) {
 
         System.out.println("=====================================");
-        System.out.println(" UC11 - Validate Train ID & Cargo Code ");
+        System.out.println(" UC13 - Performance Comparison (Loops vs Streams)");
         System.out.println("=====================================\n");
+feature/UC13-PerformanceComparison
+
+        List<Bogie> bogies = new ArrayList<>();
+
+        for (int i = 1; i <= 100000; i++) {
+            bogies.add(new Bogie("Cargo", i));
+        }
+
 feature/UC11-ValidateTrainIDCargoCodes
         // Accept input
         System.out.print("Enter Train ID (Format: TRN-1234): ");
@@ -162,18 +188,28 @@ dev
 feature/UC9-GroupBogiesbyType
         bogies.add(new Bogie("Sleeper", 70));
 dev
+dev
 
-        Pattern trainIdPattern = Pattern.compile(trainIdRegex);
-        Pattern cargoCodePattern = Pattern.compile(cargoCodeRegex);
+        long loopStartTime = System.nanoTime();
 
-        Matcher trainIdMatcher = trainIdPattern.matcher(trainId);
-        Matcher cargoCodeMatcher = cargoCodePattern.matcher(cargoCode);
+        List<Bogie> loopFiltered = new ArrayList<>();
+        for (Bogie bogie : bogies) {
+            if (bogie.capacity > 50000) {
+                loopFiltered.add(bogie);
+            }
+        }
 
-        boolean isTrainIdValid = trainIdMatcher.matches();
-        boolean isCargoCodeValid = cargoCodeMatcher.matches();
+        long loopEndTime = System.nanoTime();
+        long loopDuration = loopEndTime - loopStartTime;
 
-        System.out.println("\nValidation Results:");
+        long streamStartTime = System.nanoTime();
+feature/UC13-PerformanceComparison
+        List<Bogie> streamFiltered = bogies.stream()
+                .filter(b -> b.capacity > 50000)
+                .collect(Collectors.toList());
 
+        long streamEndTime = System.nanoTime();
+        long streamDuration = streamEndTime - streamStartTime;
         if (isTrainIdValid) {
             System.out.println("Train ID is valid.");
         } else {
@@ -185,13 +221,13 @@ feature/UC11-ValidateTrainIDCargoCodes
         } else {
             System.out.println("Invalid Cargo Code format.");
         }
+ dev
 
-        if (isTrainIdValid && isCargoCodeValid) {
-            System.out.println("\nInput validation successful. Safe to proceed.");
-        } else {
-            System.out.println("\nInput validation failed. Please correct the data.");
-        }
+        System.out.println("Loop Filtering Time   : " + loopDuration + " ns");
+        System.out.println("Stream Filtering Time : " + streamDuration + " ns");
 
+feature/UC13-PerformanceComparison
+        System.out.println("\nPerformance comparison completed.");
         scanner.close();
  feature/UC10-CountTotalSeatsinTrain
         // -------- AGGREGATE USING REDUCE --------
@@ -292,6 +328,7 @@ dev
 dev
 dev
       dev
+dev
 dev
 dev
     }
