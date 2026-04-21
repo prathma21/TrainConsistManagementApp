@@ -1,23 +1,35 @@
+ feature/UC17-SortBogieNames
+import java.util.Arrays;
+
+
 feature/UC14-HandleInvalidBogieCapacity
 feature/UC13-PerformanceComparison
 import java.util.ArrayList;
 import java.util.List;
 
  dev
+ dev
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        System.out.println("=======================================");
-        System.out.println(" UC16 - Manual Sorting using Bubble Sort ");
-        System.out.println("=======================================\n");
+        System.out.println("============================================");
+        System.out.println(" UC17 - Sort Bogie Names Using Arrays.sort() ");
+        System.out.println("============================================\n");
 
-        int[] capacities = {72, 56, 24, 70, 60};
+        String[] bogieNames = {
+                "Sleeper",
+                "AC Chair",
+                "First Class",
+                "General",
+                "Luxury"
+        };
 
-        System.out.println("Original Capacities:");
-        for (int c : capacities) {
-            System.out.print(c + " ");
-        }
+        System.out.println("Original Bogie Names:");
+        System.out.println(Arrays.toString(bogieNames));
+
+ feature/UC17-SortBogieNames
+        Arrays.sort(bogieNames);
 
         for (int i = 0; i < capacities.length - 1; i++) {
             for (int j = 0; j < capacities.length - 1 - i; j++) {
@@ -29,11 +41,10 @@ public class TrainConsistManagementApp {
             }
         }
 feature/UC16-SortPassengerBogiesbyCapacity
+ dev
 
-        System.out.println("\n\nSorted Capacities (Ascending):");
-        for (int c : capacities) {
-            System.out.print(c + " ");
-        }
+        System.out.println("\nSorted Bogie Names (Alphabetical):");
+        System.out.println(Arrays.toString(bogieNames));
     }
 feature/UC11-ValidateTrainIDCargoCodes
 import java.util.Scanner;
