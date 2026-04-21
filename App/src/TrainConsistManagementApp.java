@@ -1,3 +1,5 @@
+ feature/UC20-ExceptionHandlingDuringSearchOperations
+
  feature/UC19-BinarySearchforBogieID
 import java.util.Arrays;
 
@@ -17,49 +19,46 @@ import java.util.List;
  dev
  dev
  dev
+ dev
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
         System.out.println("========================================");
-        System.out.println(" UC19 - Binary Search for Bogie ID ");
+        System.out.println(" UC20 - Exception Handling During Search ");
         System.out.println("========================================\n");
 
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(bogieIds);
+        String[] bogieIds = {};
+        String searchId = "BG101";
 
-        String key = "BG309";
-
-        System.out.println("Sorted Bogie IDs:");
-        for (String id : bogieIds) {
-            System.out.println(id);
+        if (bogieIds.length == 0) {
+            throw new IllegalStateException(
+                    "No bogies available in train. Cannot perform search.");
         }
 
-        int low = 0;
-        int high = bogieIds.length - 1;
         boolean found = false;
 
-        while (low <= high) {
-            int mid = (low + high) / 2;
-
-            if (bogieIds[mid].equals(key)) {
+        for (String id : bogieIds) {
+            if (id.equals(searchId)) {
                 found = true;
                 break;
-            } else if (bogieIds[mid].compareTo(key) < 0) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
             }
         }
+
+ feature/UC20-ExceptionHandlingDuringSearchOperations
 
  feature/LinearSearchforBogieID
         System.out.println();
 
+ dev
         if (found) {
-            System.out.println("Bogie " + key + " found using binary search.");
+            System.out.println("Bogie " + searchId + " found in train consist.");
         } else {
-            System.out.println("Bogie " + key + " not found using binary search.");
+            System.out.println("Bogie " + searchId + " not found in train consist.");
         }
+
+ feature/UC20-ExceptionHandlingDuringSearchOperations
+        System.out.println("\nUC20 execution completed...");
 
  feature/UC17-SortBogieNames
         Arrays.sort(bogieNames);
@@ -447,5 +446,6 @@ dev
 dev
 dev
 dev
+ dev
     }
 }
