@@ -1,26 +1,34 @@
+feature/UC14-HandleInvalidBogieCapacity
 feature/UC13-PerformanceComparison
 import java.util.ArrayList;
 import java.util.List;
 
+ dev
 public class TrainConsistManagementApp {
 
-    static class GoodsBogie {
-        String type;
-        String cargo;
-
-        GoodsBogie(String type, String cargo) {
-            this.type = type;
-            this.cargo = cargo;
+    static class InvalidCapacityException extends Exception {
+        public InvalidCapacityException(String message) {
+            super(message);
         }
     }
-=======
+
+    static class PassengerBogie {
+        String type;
+        int capacity;
+
+        PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+            if (capacity <= 0) {
+                throw new InvalidCapacityException("Capacity must be greater than zero");
+            }
+            this.type = type;
+            this.capacity = capacity;
+        }
+    }
 feature/UC11-ValidateTrainIDCargoCodes
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class TrainConsistManagementApp {
-
-=======
  feature/UC9-GroupBogiesbyType
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +144,7 @@ dev
 
 feature/UC-12SafetyComplianceCheckforGoodsBogies
         System.out.println("=======================================");
-        System.out.println(" UC12 - Safety Compliance Check for Goods Bogies ");
+        System.out.println(" UC14 - Handle Invalid Bogie Capacity ");
         System.out.println("=======================================\n");
         System.out.println("=====================================");
         System.out.println(" UC13 - Performance Comparison (Loops vs Streams)");
@@ -144,6 +152,19 @@ feature/UC-12SafetyComplianceCheckforGoodsBogies
 feature/UC13-PerformanceComparison
 dev
 
+feature/UC14-HandleInvalidBogieCapacity
+        try {
+            PassengerBogie bogie = new PassengerBogie("Sleeper", 72);
+            System.out.println("Created Bogie: " + bogie.type + " -> " + bogie.capacity);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        try {
+            PassengerBogie bogie = new PassengerBogie("General", -10);
+            System.out.println("Created Bogie: " + bogie.type + " -> " + bogie.capacity);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
         List<GoodsBogie> goodsBogies = new ArrayList<>();
 
 feature/UC-12SafetyComplianceCheckforGoodsBogies
@@ -221,6 +242,7 @@ feature/UC-12SafetyComplianceCheckforGoodsBogies
             System.out.println("Train formation is SAFE.");
         } else {
             System.out.println("Train formation is NOT SAFE.");
+ dev
         }
         long loopEndTime = System.nanoTime();
         long loopDuration = loopEndTime - loopStartTime;
