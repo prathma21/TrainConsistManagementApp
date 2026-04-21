@@ -1,56 +1,55 @@
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-public class TrainConsistManagementApp {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class UseCase13TrainConsistMgmt {
+
+    static class Bogie {
+        String type;
+        int capacity;
+
+        Bogie(String type, int capacity) {
+            this.type = type;
+            this.capacity = capacity;
+        }
+    }
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-
         System.out.println("=====================================");
-        System.out.println(" UC11 - Validate Train ID & Cargo Code ");
+        System.out.println(" UC13 - Performance Comparison (Loops vs Streams)");
         System.out.println("=====================================\n");
 
-        // Accept input
-        System.out.print("Enter Train ID (Format: TRN-1234): ");
-        String trainId = scanner.nextLine();
+        List<Bogie> bogies = new ArrayList<>();
 
-        System.out.print("Enter Cargo Code (Format: PET-AB): ");
-        String cargoCode = scanner.nextLine();
-
-        // Define regex rules
-        String trainIdRegex = "^TRN-\\d{4}$";
-        String cargoCodeRegex = "^[A-Z]{3}-[A-Z]{2}$";
-
-        Pattern trainIdPattern = Pattern.compile(trainIdRegex);
-        Pattern cargoCodePattern = Pattern.compile(cargoCodeRegex);
-
-        Matcher trainIdMatcher = trainIdPattern.matcher(trainId);
-        Matcher cargoCodeMatcher = cargoCodePattern.matcher(cargoCode);
-
-        boolean isTrainIdValid = trainIdMatcher.matches();
-        boolean isCargoCodeValid = cargoCodeMatcher.matches();
-
-        System.out.println("\nValidation Results:");
-
-        if (isTrainIdValid) {
-            System.out.println("Train ID is valid.");
-        } else {
-            System.out.println("Invalid Train ID format.");
+        for (int i = 1; i <= 100000; i++) {
+            bogies.add(new Bogie("Cargo", i));
         }
 
-        if (isCargoCodeValid) {
-            System.out.println("Cargo Code is valid.");
-        } else {
-            System.out.println("Invalid Cargo Code format.");
+        long loopStartTime = System.nanoTime();
+
+        List<Bogie> loopFiltered = new ArrayList<>();
+        for (Bogie bogie : bogies) {
+            if (bogie.capacity > 50000) {
+                loopFiltered.add(bogie);
+            }
         }
 
-        if (isTrainIdValid && isCargoCodeValid) {
-            System.out.println("\nInput validation successful. Safe to proceed.");
-        } else {
-            System.out.println("\nInput validation failed. Please correct the data.");
-        }
+        long loopEndTime = System.nanoTime();
+        long loopDuration = loopEndTime - loopStartTime;
 
-        scanner.close();
+        long streamStartTime = System.nanoTime();
+
+        List<Bogie> streamFiltered = bogies.stream()
+                .filter(b -> b.capacity > 50000)
+                .collect(Collectors.toList());
+
+        long streamEndTime = System.nanoTime();
+        long streamDuration = streamEndTime - streamStartTime;
+
+        System.out.println("Loop Filtering Time   : " + loopDuration + " ns");
+        System.out.println("Stream Filtering Time : " + streamDuration + " ns");
+
+        System.out.println("\nPerformance comparison completed.");
     }
 }
