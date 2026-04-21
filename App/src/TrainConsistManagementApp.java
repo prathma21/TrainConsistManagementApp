@@ -1,48 +1,42 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class TrainConsistManagementApp {
 
-    static class GoodsBogie {
-        String type;
-        String cargo;
+    static class InvalidCapacityException extends Exception {
+        public InvalidCapacityException(String message) {
+            super(message);
+        }
+    }
 
-        GoodsBogie(String type, String cargo) {
+    static class PassengerBogie {
+        String type;
+        int capacity;
+
+        PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+            if (capacity <= 0) {
+                throw new InvalidCapacityException("Capacity must be greater than zero");
+            }
             this.type = type;
-            this.cargo = cargo;
+            this.capacity = capacity;
         }
     }
 
     public static void main(String[] args) {
 
         System.out.println("=======================================");
-        System.out.println(" UC12 - Safety Compliance Check for Goods Bogies ");
+        System.out.println(" UC14 - Handle Invalid Bogie Capacity ");
         System.out.println("=======================================\n");
 
-        List<GoodsBogie> goodsBogies = new ArrayList<>();
-
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsBogies.add(new GoodsBogie("Open", "Coal"));
-        goodsBogies.add(new GoodsBogie("Box", "Grain"));
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Coal"));
-
-        System.out.println("Goods Bogies in Train:");
-        for (GoodsBogie bogie : goodsBogies) {
-            System.out.println(bogie.type + " -> " + bogie.cargo);
+        try {
+            PassengerBogie bogie = new PassengerBogie("Sleeper", 72);
+            System.out.println("Created Bogie: " + bogie.type + " -> " + bogie.capacity);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        boolean isSafe = goodsBogies.stream()
-                .allMatch(b ->
-                        !b.type.equalsIgnoreCase("Cylindrical")
-                                || b.cargo.equalsIgnoreCase("Petroleum")
-                );
-
-        System.out.println("\nSafety Compliance Status: " + isSafe);
-
-        if (isSafe) {
-            System.out.println("Train formation is SAFE.");
-        } else {
-            System.out.println("Train formation is NOT SAFE.");
+        try {
+            PassengerBogie bogie = new PassengerBogie("General", -10);
+            System.out.println("Created Bogie: " + bogie.type + " -> " + bogie.capacity);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
